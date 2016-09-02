@@ -16,40 +16,107 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 
-<div>
-    <form name="ib_settings">
+<div class="wrap">
 
-        <div>
-            <label for="ib_settings[title]">Titulo</label>
+    <span class="dashicons dashicons-admin-tools"></span>
 
-            <input type="text" id="ib_settings[title]"/>
-        </div>
+    <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
-        <div>
-            <label for="ib_settings[class]">Clase</label>
-            <input type="text" id="ib_settings[class]"/>
-        </div>
-
-        <div>
-            <label for="ib_settings[start_date]">Start Date</label>
-            <input type="date" id="ib_settings[start_date]"/>
-        </div>
-
-        <div>
-            <label for="ib_settings[end_date]]">End Date</label>
-            <input type="date" id="ib_settings[end_date]"/>
-        </div>
+    <p>Opciones para especificas para la administracion de la pagina Web de InterBanco</p>
 
 
-        <div>
-            <label for="ib_settings[service_endpoint]]">Service End Point</label>
-            <input type="text" id="ib_settings[service_endpoint]"/>
-        </div>
+    <form method="post" name="wib_interbanco_options" action="options.php">
 
 
-        <div>
-            <button type="submit">Guardar</button>
-        </div>
+
+        <?php
+        //Grab all options
+        $options = get_option($this->plugin_name);
+
+        // Cleanup
+        $title = $options['title'];
+        $classname = $options['classname'];
+        $url = $options['url'];
+        ?>
+
+
+
+        <?php
+        settings_fields($this->plugin_name);
+        do_settings_sections($this->plugin_name);
+        ?>
+
+
+        <h2>General</h2>
+
+        <table class="form-table">
+
+
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo $this->plugin_name; ?>-title">Titulo</label>
+                </th>
+
+                <td>
+                    <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-title"
+                           name="<?php echo $this->plugin_name; ?>[title]" value="<?php echo $title ?>">
+                    <br>
+                    <span class="description"><?php esc_attr_e('Titulo de la opcion', $this->plugin_name); ?></span>
+                </td>
+            </tr>
+
+
+        </table>
+
+        <hr/>
+        <h2>Apariencia</h2>
+        <table class="form-table">
+
+
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo $this->plugin_name; ?>-classname">Clase CSS</label>
+                </th>
+
+                <td>
+
+                    <select name="<?php echo $this->plugin_name; ?>[classname]" id="<?php echo $this->plugin_name; ?>-classname">
+                        <option value="" <?php selected($classname, "" ); ?>>Please select a body background color</option>
+                        <option value="blue" <?php selected( $classname, "blue" ); ?>>Blue</option>
+                        <option value="red" <?php selected( $classname, "red" ); ?>>Red</option>
+                        <option value="yellow" <?php selected( $classname, "yellow" ); ?>>Yellow</option>
+                        <option value="green" <?php selected( $classname, "green" ); ?>>Green</option>
+                    </select>
+
+                    <br>
+                    <span class="description"><?php esc_attr_e('CSS Clase', $this->plugin_name); ?></span>
+                </td>
+            </tr>
+
+
+        </table>
+
+        <hr/>
+        <h2>Datos</h2>
+        <table class="form-table">
+
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo $this->plugin_name; ?>-title">Url</label>
+                </th>
+
+                <td>
+                    <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-url"
+                           name="<?php echo $this->plugin_name; ?>[url]"  value="<?php echo $url ?>">
+                    <br>
+                    <span class="description"><?php esc_attr_e('Url del origen de datos', $this->plugin_name); ?></span>
+                </td>
+            </tr>
+
+        </table>
+
+
+        <?php submit_button('Save all changes', 'primary', 'submit', TRUE) ?>
 
 
     </form>

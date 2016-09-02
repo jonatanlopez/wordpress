@@ -1,0 +1,59 @@
+.interbanco_widget_box {
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: auto;
+    text-align: center;
+}
+
+
+.interbanco_wg_tipo_cambio {
+    background: #faffff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 12x;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    padding: 14px 0;
+}
+
+
+.interbanco_wg_tipo_cambio > .barra_ticker span {
+    font-size: 0.8em;
+    font-weight: 300;
+    line-height: 2.5em;
+    color: #0058AE;
+}
+
+.tick_bold {
+    font-weight: 400!important;
+}
+
+.tick_verde {
+    color: #5db337!important;
+}
+
+.tick_rojo {
+    color: #cc3333!important;
+}
+
+.icon_mod {
+    background: url(../images/icons_mods.png) no-repeat;
+    background-size: 256px 256px;
+    width: 74px;
+    height: 74px;
+    display: block;
+}
+
+.icn_tipo_cambio {
+    margin-left: auto;
+    margin-right: auto;
+    /*    margin-top: 30px;*/
+}
+
+
+.clip_circle_mod {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 6px solid #fff;
+}

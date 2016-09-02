@@ -122,7 +122,7 @@ class Interbanco_Admin
          *        Administration Menus: http://codex.wordpress.org/Administration_Menus
          *
          */
-        add_options_page('WIB Plugin Options Setup', 'WIB Interbanco', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page')
+        add_options_page('InterBanco Web Settings', 'WIB Interbanco', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page')
 
 
         /*
@@ -163,6 +163,47 @@ class Interbanco_Admin
     public function display_plugin_setup_page()
     {
         include_once('partials/interbanco-admin-display.php');
+    }
+
+
+    public function options_update() {
+        register_setting($this->plugin_name, $this->plugin_name, array($this, 'validate'));
+    }
+
+    /*
+     * validate and sanitize those options
+     */
+    public function validate($input) {
+        // All checkboxes inputs
+        $valid = array();
+
+        //General
+
+
+
+        $valid['title'] = (isset($input['title']) && !empty($input['title'])) ? sanitize_text_field($input['title']) : '';
+
+        //Apariencia
+        $valid['classname'] = (isset($input['classname']) && !empty($input['classname'])) ? sanitize_text_field($input['classname']) : '';
+
+        //Datos
+
+        if (empty($input['url']))
+        {
+            add_settings_error(
+                'url',                     // Setting title
+                'data_service_url_texterror',            // Error ID
+                'Please enter a valid url value',     // Error message
+                'error'                         // Type of message
+            );
+        }
+        else{
+            $valid['url'] = esc_url($input['url']);
+        }
+
+
+
+        return $valid;
     }
 
 }

@@ -163,7 +163,14 @@ class Interbanco {
 
         $plugin_basename = plugin_basename(plugin_dir_path(__DIR__) . $this->plugin_name . '.php');
 
+        //write_log($plugin_basename);
+
+
         $this->loader->add_filter('plugin_actions_links_' . $plugin_basename, $plugin_admin, 'add_action_links');
+
+
+        // Save/Update our plugin options
+        $this->loader->add_action('admin_init', $plugin_admin, 'options_update');
 
 	}
 
@@ -180,6 +187,11 @@ class Interbanco {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+
+        //deberia de agregarle a la clase un body class
+
+        $this->loader->add_filter('body_class',$plugin_public,'body_class_slug');
 
 	}
 

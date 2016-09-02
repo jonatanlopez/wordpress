@@ -1,24 +1,7 @@
 <?php
-/*
-Plugin Name: Web InterBanco Ticker
-Plugin URI: https://www.interbanco.com.gt/webinterbancoticker
-Description: A simple, exchange rate ticker widget.
-Author: Jonatan Lopez
-Author URI: https://github.com/jonatanlopez
-
-Version: 1.0.0
-
-Text Domain: wib-ticker
-Domain Path: /languages
-
-License: GNU General Public License v2.0 (or later)
-License URI: http://www.opensource.org/licenses/gpl-license.php
-*/
-
-//add_action('plugins_loaded', 'wib_ticker_load');
 
 
-class WIB_Ticker extends WP_Widget
+class wg_tipo_cambio extends WP_Widget
 {
 
     protected $defaults;
@@ -33,16 +16,16 @@ class WIB_Ticker extends WP_Widget
         );
 
         $widget_options = array(
-            'classname' => 'wib_ticker_widget',
+            'classname' => 'wg_tipo_cambio',
             'description' => 'Widget para mostrar el tipo de cambio de Interbanco'
         );
 
         $control_options = array(
-            'id_base' => 'wib_ticker',
+            'id_base' => 'wg_tipo_cambio',
         );
 
 
-        parent::__construct('wib_ticker', 'Ticker Exchange Rate Widget', $widget_options, $control_options);
+        parent::__construct('wg_tipo_cambio', 'Widget para mostrar el tipo de cambio', $widget_options, $control_options);
 
 
     }
@@ -52,10 +35,13 @@ class WIB_Ticker extends WP_Widget
     {
         /**Merge with defaults**/
         $instance = wp_parse_args((array)$instance, $this->defaults);
+
+        //write_log($instance);
+
         ?>
 
         <div>
-            <label for="<?php echo $this->get_field_id('title'); ?>">Title</label>
+            <label for="<?php echo $this->get_field_id('title'); ?>">Titulo</label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                    name="<?php echo $this->get_field_name('title'); ?>" type="text"
                    value="<?php echo esc_attr($instance['title']); ?>"/>
@@ -99,32 +85,41 @@ class WIB_Ticker extends WP_Widget
 
         echo $args['before_widget'];
 
-        if (!empty($instace['title'])) {
-            echo $args['before_title'] . apply_filters('widget_title', $instance['title'], $instance, $this->id_base) . $args['after_title'];
+//        if (!empty($instance['title'])) {
+//            echo $args['before_title'] . apply_filters('widget_title', $instance['title'], $instance, $this->id_base) . $args['after_title'];
+//        }
 
 
-        }
-        $output = '';
+        $tipo_cambio = consultar_tipo_cambio($instance['url']);
 
-        $output = $instance['url'];
+
+        write_log($tipo_cambio);
 
         ?>
 
         <!-- ticker tipo de cambio -->
-        <div id="ticker_box" class="ticker_box">
-            <div class="clip_circle_mod icon_mod icn_ticker"></div><!-- icono del módulo-->
+        <div class="interbanco_widget_box interbanco_wg_tipo_cambio">
+
+            <div class="clip_circle_mod icon_mod icn_tipo_cambio"></div><!-- icono del módulo-->
+
+            <div id="interbanco_widget_header">
+                <span class="txt_titulo"><?php echo $instance['title'] ?></span>
+            </div>
+
             <div class="barra_ticker">
-                <span class="tick_bold">CAMBIO &gt; </span>
-                <span>USD compra 7.56 - venta 7.87</span><span class="tick_verde"> +0.02% </span><span> &#8226; </span>
-                <span>EUR compra 8.56 - venta 9.98</span><span class="tick_rojo"> -0.3% </span>
+                <div>
+                    <div class="tick_bold">USD</div>
+                    <span>compra <?php echo number_format_i18n((double)$tipo_cambio->CompraGeneral,2) ?> - venta <?php  echo number_format_i18n((double)$tipo_cambio->VentaGeneral,2) ?></span>
+                </div>
+                <div>
+                    <div>EUR</div>
+                    <span>compra <?php echo number_format_i18n((double)$tipo_cambio->CompraGeneral_EURQTZ,2) ?> - venta <?php  echo number_format_i18n((double)$tipo_cambio->VentaGeneral_EURQTZ,2) ?></span>
+                </div>
             </div><!-- fin barra ticker -->
 
         </div> <!-- FIN ST BOX-->
         <!-- fin ticker tipo de cambio -->
-
-
-    <?php
-
+        <?php
 
 
         //if ($output) {
@@ -138,19 +133,19 @@ class WIB_Ticker extends WP_Widget
     }
 
 
-
 }
 
 
-add_action( 'widgets_init', 'wib_load_widget' );
+add_action('widgets_init', 'interbanco_load_widget');
 /**
  * Widget Registration.
  *
  * Register Simple Social Icons widget.
  *
  */
-function wib_load_widget() {
+function interbanco_load_widget()
+{
 
-    register_widget( 'WIB_Ticker' );
+    register_widget('wg_tipo_cambio');
 
 }

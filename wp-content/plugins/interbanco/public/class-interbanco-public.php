@@ -22,6 +22,8 @@
  */
 class Interbanco_Public {
 
+    private $options;
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -51,6 +53,8 @@ class Interbanco_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+
+        $this->options = get_option($this->plugin_name);
 
 	}
 
@@ -99,5 +103,24 @@ class Interbanco_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/interbanco-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+
+    public function body_class_slug($classes){
+
+        write_log($classes);
+        write_log($this->options);
+
+        //si hay algo en classname entonces
+        if (!empty($this->options['classname'])){
+
+
+            //Agregar al final un elemento al array
+            array_push($classes,$this->options['classname']);
+
+        }
+
+        return $classes;
+    }
+
 
 }
